@@ -9,6 +9,7 @@ class CitizenshipDocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = CitizenshipDocument
         fields = [
+            'user',
             'id',
             'image',
             'citizenship_no',
@@ -32,10 +33,13 @@ class CitizenshipDocumentSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_at', 'updated_at', 'raw_text']
 
 
-class CitizenshipDocumentUploadSerializer(serializers.ModelSerializer):
+class CitizenshipDocumentUploadSerializer(serializers.Serializer):
     """
     Serializer for uploading citizenship document images
     """
-    class Meta:
-        model = CitizenshipDocument
-        fields = ['image']
+    image = serializers.ImageField(required=True)
+    document_type = serializers.CharField(required=False, allow_blank=True)
+    user = serializers.IntegerField(required=False, allow_null=True)
+    
+    def create(self, validated_data):
+        pass

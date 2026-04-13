@@ -1,12 +1,10 @@
 from django.db import models
+from django.conf import settings
+
 
 class CitizenshipDocument(models.Model):
-    """
-    Model to store citizenship document images and extracted data
-    """
     image = models.ImageField(upload_to='citizenship_documents/')
-    
-    # Extracted data
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='citizenship_documents')
     citizenship_no = models.CharField(max_length=255, null=True, blank=True)
     name = models.CharField(max_length=255, null=True, blank=True)
     gender = models.CharField(max_length=50, null=True, blank=True)
@@ -21,11 +19,7 @@ class CitizenshipDocument(models.Model):
     mother = models.CharField(max_length=255, null=True, blank=True)
     office = models.CharField(max_length=255, null=True, blank=True)
     document_type = models.CharField(max_length=100, null=True, blank=True)
-    
-    # Raw OCR data
     raw_text = models.TextField(null=True, blank=True)
-    
-    # Metadata
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

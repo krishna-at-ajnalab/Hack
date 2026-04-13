@@ -80,9 +80,6 @@ def process_citizenship_image(image_file):
                              [0, -1, 0]])
     final = cv2.filter2D(morph, -1, kernel_sharp)
     
-    # Step 8: Extract text using Tesseract OCR with optimized config
-    # PSM 6: Assume a single uniform block of text
-    # OEM 3: Use both legacy and LSTM OCR engine modes
     config = r'--oem 3 --psm 6 -c tessedit_char_whitelist='
     text = pytesseract.image_to_string(
         final,
