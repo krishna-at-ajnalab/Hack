@@ -4,7 +4,7 @@ from django.conf import settings
 
 class CitizenshipDocument(models.Model):
     image = models.ImageField(upload_to='citizenship_documents/')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='citizenship_documents')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True,blank=True,related_name='citizenship_documents')
     citizenship_no = models.CharField(max_length=255, null=True, blank=True)
     name = models.CharField(max_length=255, null=True, blank=True)
     gender = models.CharField(max_length=50, null=True, blank=True)

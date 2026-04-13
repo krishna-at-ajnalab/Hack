@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-yp#!g!g6ce5lz44n6kdf+w47h=6p0wnra2af!nwl*(il$0_2z!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'ocr',
-    'authuser'
+    'authuser',
+    'chatbot',
+    'corsheaders',
     
 ]
 
@@ -52,6 +54,7 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'authuser.User'
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware", 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -60,7 +63,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+CORS_ALLOW_ALL_ORIGINS = True
 ROOT_URLCONF = 'auto_docs.urls'
 
 TEMPLATES = [

@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.parsers import JSONParser
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer
 
@@ -8,9 +9,17 @@ User = get_user_model()
 
 
 class RegisterByPhoneView(APIView):
+    parser_classes = [JSONParser]
+    
     def post(self, request):
-        phone = request.data.get("phone")
-        name = request.data.get("name", "")
+        try:
+            phone = request.data.get("phone") if isinstance(request.data, dict) else None
+            name = request.data.get("name", "") if isinstance(request.data, dict) else ""
+        except (AttributeError, TypeError):
+            return Response(
+                {"error": "Invalid request data. Expected JSON format: {\"phone\": \"...\", \"name\": \"...\"}"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         if not phone:
             return Response({"error": "Phone number is required."}, status=status.HTTP_400_BAD_REQUEST)
@@ -27,14 +36,34 @@ class RegisterByPhoneView(APIView):
 
 
 class UserByPhoneView(APIView):
+    parser_classes = [JSONParser]
+    
     def post(self, request):
-        phone = request.data.get("phone")
+        try:
+            phone = request.data.get("phone") if isinstance(request.data, dict) else None
+            name = request.data.get("name", "") if isinstance(request.data, dict) else ""
+        except (AttributeError, TypeError):
+            return Response(
+                {"error": "Invalid request data. Expected JSON format: {\"phone\": \"<phone_number>\"}"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
         if not phone:
             return Response({"error": "Phone number is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = User.objects.filter(phone=phone).first()
-        if not user:
-            return Response({"error": "No user found."}, status=status.HTTP_404_NOT_FOUND)
-
+        # Get or create user - creates if doesn't exist
+        user, created = User.objects.get_or_create(
+            phone=phone,
+            defaults={'name': name}
+        )
+        
+        action = "registered" if created else "logged in"
         serializer = UserSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            {
+                "success": True,
+                "action": action,
+                "user": serializer.data
+            }, 
+            status=status.HTTP_201_CREATED if created else status.HTTP_200_OK
+        )

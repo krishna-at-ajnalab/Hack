@@ -24,6 +24,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('ocr/', include('ocr.urls')),
     path('auth/', include('authuser.urls')),
+    path('chatbot/', include('chatbot.urls')),
 ]
 
 # Serve media files during development

@@ -46,12 +46,12 @@ class CitizenshipDocumentViewSet(viewsets.ModelViewSet):
             extracted_data = process_citizenship_image(image_file)
             
             # Get user_id from request data (optional)
-            user_id = request.data.get('user')
+            # user_id = request.data.get('user')
             
             # Save the document with extracted data
             document = CitizenshipDocument.objects.create(
                 image=image_file,
-                user_id=user_id,
+                # user_id=user_id,
                 citizenship_no=extracted_data.get('citizenship_no'),
                 name=extracted_data.get('name'),
                 gender=extracted_data.get('gender'),
