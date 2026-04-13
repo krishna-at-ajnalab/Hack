@@ -8,3 +8,8 @@ wheels/
 
 # Virtual environments
 .venv
+
+.vscode
+browser_session_ppan
+
+*.png
