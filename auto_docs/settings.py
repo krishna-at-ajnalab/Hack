@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
+    'ocr',
 ]
 
 REST_FRAMEWORK = {
@@ -76,6 +77,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'auto_docs.wsgi.application'
 
+# Media files (User uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
