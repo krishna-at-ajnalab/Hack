@@ -2,9 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from openai import OpenAI
-# Hardcoded API key for OpenRouter
-OPENROUTER_API_KEY = "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"
-OPENROUTER_MODEL = "openai/gpt-oss-20b:free"
+
 
 class ChatbotAPIView(APIView):
     """
